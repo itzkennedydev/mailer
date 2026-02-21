@@ -1,0 +1,22 @@
+{
+  "name": "@itzkennedydev/mailer",
+  "version": "1.0.0",
+  "description": "Shared email service using Nodemailer with Gmail OAuth2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": ["email", "nodemailer", "gmail", "oauth2"],
+  "author": "Kennedy Maombi <kennedy@itskennedy.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "6.9.16"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "6.4.17",
+    "typescript": "5.7.3"
+  }
+}
