@@ -4,12 +4,20 @@
   "description": "Shared email service using Nodemailer with Gmail OAuth2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
+    "prepare": "npm run build",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["email", "nodemailer", "gmail", "oauth2"],
+  "keywords": [
+    "email",
+    "nodemailer",
+    "gmail",
+    "oauth2"
+  ],
   "author": "Kennedy Maombi <kennedy@itskennedy.dev>",
   "license": "MIT",
   "dependencies": {
@@ -17,6 +25,9 @@
   },
   "devDependencies": {
     "@types/nodemailer": "6.4.17",
+    "google-auth-library": "^10.5.0",
+    "googleapis": "^171.4.0",
+    "open": "^11.0.0",
     "typescript": "5.7.3"
   }
 }
