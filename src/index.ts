@@ -3,11 +3,9 @@ import type { Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export interface MailerConfig {
-  gmail: {
+  brevo: {
     user: string;
-    clientId: string;
-    clientSecret: string;
-    refreshToken: string;
+    password: string;
   };
   defaults?: {
     from?: string;
@@ -39,20 +37,19 @@ let transporter: Transporter<SMTPTransport.SentMessageInfo> | null = null;
 let defaultConfig: NonNullable<MailerConfig['defaults']> = {};
 
 /**
- * Initialize the mailer with Gmail OAuth2 credentials.
+ * Initialize the mailer with Brevo SMTP credentials.
  * Call this once at app startup.
  */
 export function initMailer(config: MailerConfig): void {
-  const { gmail, defaults } = config;
+  const { brevo, defaults } = config;
 
   transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp-relay.brevo.com',
+    port: 587,
+    secure: false,
     auth: {
-      type: 'OAuth2',
-      user: gmail.user,
-      clientId: gmail.clientId,
-      clientSecret: gmail.clientSecret,
-      refreshToken: gmail.refreshToken,
+      user: brevo.user,
+      pass: brevo.password,
     },
   });
 
@@ -61,22 +58,20 @@ export function initMailer(config: MailerConfig): void {
 
 /**
  * Initialize mailer from environment variables.
- * Expects: GMAIL_USER, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN
+ * Expects: BREVO_SMTP_USER, BREVO_SMTP_PASSWORD
  * Optional: MAILER_FROM, MAILER_REPLY_TO
  */
 export function initMailerFromEnv(): void {
-  const user = process.env.GMAIL_USER;
-  const clientId = process.env.GMAIL_CLIENT_ID;
-  const clientSecret = process.env.GMAIL_CLIENT_SECRET;
-  const refreshToken = process.env.GMAIL_REFRESH_TOKEN;
+  const user = process.env.BREVO_SMTP_USER;
+  const password = process.env.BREVO_SMTP_PASSWORD;
 
-  if (!user || !clientId || !clientSecret || !refreshToken) {
-    console.warn('[Mailer] Gmail OAuth2 credentials not configured. Emails will be logged only.');
+  if (!user || !password) {
+    console.warn('[Mailer] Brevo SMTP credentials not configured. Emails will be logged only.');
     return;
   }
 
   initMailer({
-    gmail: { user, clientId, clientSecret, refreshToken },
+    brevo: { user, password },
     defaults: {
       from: process.env.MAILER_FROM,
       replyTo: process.env.MAILER_REPLY_TO,
@@ -85,13 +80,13 @@ export function initMailerFromEnv(): void {
 }
 
 /**
- * Send an email using the configured Gmail OAuth2 transport.
+ * Send an email using the configured Brevo SMTP transport.
  */
 export async function sendEmail(options: SendEmailOptions): Promise<SendEmailResult> {
   const { to, subject, html, text, from, replyTo, attachments } = options;
 
   const toAddresses = Array.isArray(to) ? to : [to];
-  const fromAddress = from ?? defaultConfig.from ?? `Mailer <${process.env.GMAIL_USER}>`;
+  const fromAddress = from ?? defaultConfig.from ?? `Mailer <noreply@itskennedy.dev>`;
   const replyToAddress = replyTo ?? defaultConfig.replyTo;
 
   if (!transporter) {
