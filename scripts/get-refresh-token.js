@@ -47,7 +47,7 @@ const server = http.createServer(async (req, res) => {
     res.end('<h1>Authorization successful!</h1><p>You can close this window.</p>');
 
     console.log('\n=== Gmail OAuth2 Credentials ===\n');
-    console.log(`GMAIL_USER=itskennedy.dev@gmail.com`);
+    console.log(`GMAIL_USER=<your-gmail-address>`);
     console.log(`GMAIL_CLIENT_ID=${clientId}`);
     console.log(`GMAIL_CLIENT_SECRET=${clientSecret}`);
     console.log(`GMAIL_REFRESH_TOKEN=${tokens.refresh_token}`);

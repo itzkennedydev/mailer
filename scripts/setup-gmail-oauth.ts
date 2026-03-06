@@ -5,21 +5,6 @@ import open from 'open';
 const SCOPES = ['https://mail.google.com/'];
 const REDIRECT_URI = 'http://localhost:3456/callback';
 
-async function createOAuthClient(projectNumber: string, accessToken: string) {
-  const res = await fetch(
-    `https://www.googleapis.com/v1/projects/${projectNumber}/brands`,
-    {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }
-  );
-
-  if (!res.ok) {
-    console.log('Note: Could not auto-create OAuth brand. You may need to configure the consent screen manually.');
-  }
-
-  return null;
-}
-
 async function main() {
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
@@ -31,7 +16,7 @@ async function main() {
 To set up Gmail OAuth2, you need an OAuth2 Client ID from Google Cloud Console.
 
 Steps:
-1. Go to: https://console.cloud.google.com/apis/credentials?project=woke-seamoss
+1. Go to: https://console.cloud.google.com/apis/credentials
 2. Click "+ CREATE CREDENTIALS" → "OAuth client ID"
 3. Application type: "Web application"
 4. Name: "Mailer"
@@ -78,7 +63,7 @@ Then run this script again:
       res.end('<h1>Authorization successful!</h1><p>You can close this window.</p>');
 
       console.log('\n=== Gmail OAuth2 Credentials ===\n');
-      console.log(`GMAIL_USER=itskennedy.dev@gmail.com`);
+      console.log(`GMAIL_USER=<your-gmail-address>`);
       console.log(`GMAIL_CLIENT_ID=${clientId}`);
       console.log(`GMAIL_CLIENT_SECRET=${clientSecret}`);
       console.log(`GMAIL_REFRESH_TOKEN=${tokens.refresh_token}`);
