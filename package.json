@@ -21,7 +21,7 @@
   "author": "Kennedy Maombi <kennedy@itskennedy.dev>",
   "license": "MIT",
   "dependencies": {
-    "nodemailer": "6.9.16"
+    "nodemailer": "7.0.11"
   },
   "devDependencies": {
     "@types/nodemailer": "6.4.17",
